@@ -55,7 +55,7 @@ export default {
     </div>`
     },
     get subject(){
-      return '注册验证码'
+      return 'Registering Code'
     }
   }
 }
