@@ -10,25 +10,23 @@ const router = express.Router()
 
 // 登录
 router.post('/signin', async (req, res) => {
-    console.log(req.body)
     let user = await User.findOne({
         email: req.body.email,
         type: req.body.type
-    })
-    console.log(user)
+    });
     if (user) {
         // 找到用户，对比密码
         if (bcrypt.compareSync(req.body.password, user.password)) {
-            let userJson = JSON.parse(JSON.stringify(user))
-            delete userJson.password
+            let userJson = JSON.parse(JSON.stringify(user));
+            delete userJson.password;
             let token = jwt.sign({
                 userJson
-            }, config.jwtSecret)
+            }, config.jwtSecret);
             return res.status(200).json({
                 message: 'Success',
                 code: 200,
                 token,
-                data: null
+                data: { nhsNumber: user.nhsNumber }
             });
         } else {
             return res.status(200).json({
@@ -42,44 +40,43 @@ router.post('/signin', async (req, res) => {
         data: null,
         message: 'User does not exist, please register first',
         code: 404
-    })
-})
+    });
+});
 
 
 // 注册
 router.post('/signup', async (req, res) => {
-    let data = req.body
-    console.log(data)
+    let data = req.body;
     let user = await User.findOne({
         email: req.body.email,
         type: req.body.type
-    })
-    console.log(user)
+    });
     if (user) {
         return res.status(200).json({
             data: null,
             message: 'The user already exists, please log in.',
             code: 404
-        })
+        });
     }
     let newUser = {
         email: data.email,
         password: bcrypt.hashSync(data.password, 10), //用bcrypt加密,哈希加密并且长度为10
-        type: data.type // patient clinicians
-    }
-    await new User(newUser).save() //存进数据库
+        type: data.type, // patient clinicians
+        nhsNumber: data.nhsNumber
+    };
+    await new User(newUser).save(); //存进数据库
     res.status(200).json({
         data: null,
         message: 'success',
         code: 200
-    })
-})
+    });
+});
 
 // 发送验证码
 router.post('/code', async (req, res) => {
     let {
         email
-    } = req.body
+    } = req.body;
     let transporter = nodeMailer.createTransport({
         host: config.smtp.host,
         port: 587,
@@ -88,7 +85,7 @@ router.post('/code', async (req, res) => {
             user: config.smtp.user,
             pass: config.smtp.pass
         }
-    })
+    });
     let ko = {
         code: config.smtp.code(),
         expire: config.smtp.expire(),
@@ -105,10 +102,10 @@ router.post('/code', async (req, res) => {
         if (result) {
             res.cookie('code', ko.code, {
                 maxAge: 1000 * 60 * 3
-            })
+            });
             res.cookie('email', email, {
                 maxAge: 1000 * 60 * 5
-            })
+            });
             return res.status(200).json({
                 data: null,
                 message: 'success',
@@ -119,14 +116,12 @@ router.post('/code', async (req, res) => {
             data: null,
             message: 'success',
             code: 200
-        })
+        });
     } catch (err) {
         console.log(err)
 
     }
-
-
-})
+});
 
 // 验证验证码
 router.post('/checkCode', async (req, res) => {
