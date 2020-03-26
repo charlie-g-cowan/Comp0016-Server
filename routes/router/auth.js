@@ -4,8 +4,68 @@ import config from '../../config'
 import User from '../../models/user'
 import bcrypt from 'bcryptjs' // 用于密码加密
 import nodeMailer from 'nodemailer'
+import axios from "axios";
+const dotenv = require('dotenv');
+dotenv.config();
 
-const router = express.Router()
+const router = express.Router();
+
+
+async function runEHRCall(options) {
+    try {
+        return await axios(options);
+    } catch (error) {
+        throw error;
+    }
+}
+
+/**
+ * If there is already an EHR associated to this NHS Number, return its EHR ID.
+ * If not, create a new one and return its EHR ID.
+ * Converted from a function I built in my FHIR hack
+ * @param fhirId
+ * @returns {Promise<void>}
+ */
+async function getOrCreateEHRIdFromNHSNumber(nhsNumber) {
+    const result = await runEHRCall({
+        'headers': {
+            'Ehr-Session-disabled': '{{Ehr-Session}}',
+            'Content-Type': 'application/json',
+            'Authorization': process.env.API_AUTHORISATION,
+        },
+        'method': 'get',
+        'url': process.env.API_URL + '/rest/v1/ehr',
+        'params': { 'subjectId': nhsNumber, 'subjectNamespace': 'uk.nhs.nhs_number' },
+    });
+    if (result.status === 204) {
+        // no ehr with that nhsNumber
+        // create an ehr
+        const creationResult = await runEHRCall({
+            'headers': {
+                'Ehr-Session-disabled': '{{Ehr-Session}}',
+                'Content-Type': 'application/json',
+                'Authorization': process.env.API_AUTHORISATION,
+            },
+            'method': 'post',
+            'url': process.env.API_URL + '/rest/v1/ehr',
+            'params': { 'subjectId': nhsNumber, 'subjectNamespace': 'uk.nhs.nhs_number' },
+            'data': { "queryable": "true", "modifiable": "true" }
+        });
+        if (creationResult.status === 201) {
+            // successfully created ehr
+            return creationResult.data.ehrId;
+        } else {
+            // creation error
+            throw 'creation error, data: ' + result.data;
+        }
+    } else if (result.status === 200) {
+        // ehr exists
+        return result.data.ehrId;
+    } else {
+        // (unexpected) error getting the ehr
+        throw 'getting error, data: ' + result.data;
+    }
+}
 
 
 // 登录
@@ -64,12 +124,27 @@ router.post('/signup', async (req, res) => {
         type: data.type, // patient clinicians
         nhsNumber: data.nhsNumber
     };
-    await new User(newUser).save(); //存进数据库
-    res.status(200).json({
-        data: null,
-        message: 'success',
-        code: 200
-    });
+    let status = 200;
+    try {
+        await getOrCreateEHRIdFromNHSNumber(data.nhsNumber);
+    } catch (e) {
+        console.log(e);
+        status = 500;
+    }
+    if (status === 200) {
+        await new User(newUser).save(); //存进数据库
+        res.status(200).json({
+            data: null,
+            message: 'success',
+            code: 200
+        });
+    } else {
+        res.status(500).json({
+            data: null,
+            message: 'failure, failed to create EHR',
+            code: 500
+        });
+    }
 });
 
 // 发送验证码
