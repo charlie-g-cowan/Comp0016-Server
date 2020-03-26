@@ -1,4 +1,5 @@
-import secret from './secret'
+const dotenv = require('dotenv');
+dotenv.config();
 
 export default {
     jwtSecret: 'xxx', // 自己定义一下密钥
@@ -9,11 +10,11 @@ export default {
         },
         get user() {
             // 改成你自己的QQ号
-            return secret.user
+            return process.env.EMAIL_USER
         },
         get pass() {
             // 改成你自己的QQ邮箱的授权码
-            return secret.pass
+            return process.env.EMAIL_PASS
         },
         get code() {
             return () => {
