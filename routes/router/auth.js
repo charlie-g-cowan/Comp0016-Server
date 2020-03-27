@@ -147,7 +147,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-// 发送验证码
+// Send the verification code
 router.post('/code', async (req, res) => {
     let {
         email
@@ -173,7 +173,7 @@ router.post('/code', async (req, res) => {
         html: config.smtp.template(ko.code)
     };
     try {
-        let result = await transporter.sendMail(mailOptions)
+        let result = await transporter.sendMail(mailOptions);
         if (result) {
             res.cookie('code', ko.code, {
                 maxAge: 1000 * 60 * 3
@@ -185,7 +185,7 @@ router.post('/code', async (req, res) => {
                 data: null,
                 message: 'success',
                 code: 200
-            })
+            });
         }
         res.status(200).json({
             data: null,
@@ -194,7 +194,6 @@ router.post('/code', async (req, res) => {
         });
     } catch (err) {
         console.log(err)
-
     }
 });
 
@@ -202,14 +201,14 @@ router.post('/code', async (req, res) => {
 router.post('/checkCode', async (req, res) => {
     let {
         code
-    } = req.body
-    let Code = req.cookies.code || ''
+    } = req.body;
+    let Code = req.cookies.code || '';
     if (Code === '') {
         return res.status(200).json({
             data: null,
             code: 404,
             message: 'Verification code expired.'
-        })
+        });
     }
     code === Code ? res.status(200).json({
         data: null,
@@ -219,39 +218,39 @@ router.post('/checkCode', async (req, res) => {
         data: null,
         code: 404,
         message: 'Incorrect verification code.'
-    })
-})
+    });
+});
 
 router.post('/reset', async (req, res) => {
-    let { code, email, password } = req.body
-    let Code = req.cookies.code || ''
+    let { code, email, password } = req.body;
+    let Code = req.cookies.code || '';
     if (Code === '') {
         return res.status(200).json({
             data: null,
             code: 404,
             message: 'Verification code expired.'
-        })
+        });
     }
     if (Code === code) {
         let user = await User.findOne({
             email,
             type: req.body.type
-        })
-        user.password = bcrypt.hashSync(password, 10)
-        await user.save()
+        });
+        user.password = bcrypt.hashSync(password, 10);
+        await user.save();
         return res.status(200).json({
             data: null,
             code: 200,
             message: 'Success'
-        })
+        });
     } else {
         return res.status(200).json({
             data: null,
             code: 404,
             message: 'Incorrect verification code.'
-        })
+        });
     }
-})
+});
 
 
 export default router

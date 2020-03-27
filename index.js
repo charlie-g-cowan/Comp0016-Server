@@ -28,8 +28,9 @@ app.use(expressJwt({
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', process.env.ORTHOAPP_URL);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, ' +
-        ' Sec-Fetch-Dest, Referer, User-Agent');
+    res.setHeader('Access-Control-Allow-Headers', 'Accept, Accept-Encoding, Accept-Language, Authorization,' +
+        ' Connection, Content-Length, Content-Type, Host, Origin, Referer, Set-Cookie, Sec-Fetch-Dest,' +
+        ' Sec-Fetch-Mode, Sec-Fetch-Site, User-Agent');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
