@@ -2,6 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import logger from 'morgan'
 import expressJwt from 'express-jwt'
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const cookieParser = require('cookie-parser');
 
@@ -9,17 +11,8 @@ import config from './config'
 import indexRouter from './routes'
 
 
-const app = express()
-mongoose.set('useFindAndModify', false)
-
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Origin', 'https://orthoproms.azurewebsites.net/');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
+const app = express();
+mongoose.set('useFindAndModify', false);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
@@ -32,6 +25,14 @@ app.use(expressJwt({
     path: ['/', '/api', '/api/auth/signup', '/api/auth/signin', '/api/auth/code', '/api/auth/checkCode',
         '/api/auth/reset']
 }));
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', process.env.ORTHOAPP_URL);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, ' +
+        ' Sec-Fetch-Dest, Referer, User-Agent');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
 
 app.get('/', (req, res) => {
     res.send('Welcome express')
