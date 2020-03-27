@@ -86,7 +86,7 @@ router.post('/signin', async (req, res) => {
                 message: 'Success',
                 code: 200,
                 token,
-                data: { nhsNumber: user.nhsNumber }
+                data: null
             });
         } else {
             return res.status(200).json({
@@ -182,22 +182,27 @@ router.post('/code', async (req, res) => {
                 maxAge: 1000 * 60 * 5
             });
             return res.status(200).json({
-                data: null,
+                data: { email },
                 message: 'success',
                 code: 200
             });
+        } else {
+            res.status(200).json({
+                data: null,
+                message: 'Email not sent, please try again later',
+                code: 500
+            });
         }
+    } catch (err) {
         res.status(200).json({
             data: null,
-            message: 'success',
-            code: 200
+            message: 'Could not send email, please ensure it is a valid and correct e-mail address',
+            code: 500
         });
-    } catch (err) {
-        console.log(err)
     }
 });
 
-// 验证验证码
+// Verification code
 router.post('/checkCode', async (req, res) => {
     let {
         code
