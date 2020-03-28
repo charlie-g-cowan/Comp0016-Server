@@ -5,6 +5,7 @@ import User from '../../models/user'
 import bcrypt from 'bcryptjs' // 用于密码加密
 import nodeMailer from 'nodemailer'
 import axios from "axios";
+
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -75,7 +76,7 @@ router.post('/signin', async (req, res) => {
         type: req.body.type
     });
     if (user) {
-        // 找到用户，对比密码
+        // Find users, compare passwords
         if (bcrypt.compareSync(req.body.password, user.password)) {
             let userJson = JSON.parse(JSON.stringify(user));
             delete userJson.password;
@@ -95,12 +96,13 @@ router.post('/signin', async (req, res) => {
                 code: 404
             });
         }
+    } else {
+        return res.status(200).json({
+            data: null,
+            message: "No user of type '" + req.body.type + "' with that email found, please register first",
+            code: 404
+        });
     }
-    res.status(200).json({
-        data: null,
-        message: 'User does not exist, please register first',
-        code: 404
-    });
 });
 
 
