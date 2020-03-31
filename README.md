@@ -1,7 +1,41 @@
 # Comp0016-Server
-1. install the mongodb and start the mongodb in the terminal.(https://docs.mongodb.com/manual/administration/install-community/)
-2. go to this folder
-3. run 'npm install'
-4. **ensure that you have provided email details and CDR login in .env.example and then `cp .env.example .env` or `mv .env.example .env`**
-5. run 'npm start'
-6. open the browser, localhost:6060.
+
+Server for login system for orthoPROMS
+
+## Getting started
+These instructions can be used to run the project locally for development and testing.
+
+### Prerequisites
+
+- Git
+- Node.js and the npm package manager
+- MongoDB - running on the default port (27017)
+
+### Installation
+
+1. Install dependencies:
+```js
+$ npm install
+```
+2. **ensure that you have provided email details and CDR login in .env.example and then"""
+```js
+$ cp .env.example .env
+```
+3. Start the server
+```js
+$ npm start
+```
+4. To ensure the server is running correctly open a browser and navigate to localhost:6060. Any issues should be reported in the log in the terminal.
+
+## Author
+
+- [Menghang Hao](https://github.com/haomenghang)
+
+### Contributors
+
+- [Charlie Cowan](https://github.com/charlie-g-cowan)
+- [Haze Al Johary](https://github.com/ihaze111)
+
+## License
+
+Licensed under the MIT License. See LICENSE for more details.
