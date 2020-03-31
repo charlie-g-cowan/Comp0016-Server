@@ -1,15 +1,29 @@
 {
-  "name": "server",
-  "version": "1.0.0",
+  "name": "Comp0016-server",
+  "description": "Server for login system for orthoPROMS",
+  "homepage": "https://github.com/charlie-g-cowan/Comp0016-Server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/charlie-g-cowan/Comp0016-Server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/charlie-g-cowan/Comp0016-Server/issues"
+  },
   "main": "index.js",
   "scripts": {
     "start": "nodemon --watch ./ --exec babel-node index.js"
   },
   "keywords": [],
   "author": "Menghang Hao",
+  "contributors": [
+    "Menghang Hao",
+    "Charlie Cowan"
+  ],
   "license": "MIT",
   "dependencies": {
+    "@babel/register": "^7.9.0",
     "axios": "^0.19.2",
+    "babel-register": "^6.26.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.2.0",
@@ -26,5 +40,4 @@
     "morgan": "^1.9.1",
     "nodemon": "^2.0.2"
   },
-  "description": ""
 }
