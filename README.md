@@ -18,7 +18,7 @@ These instructions can be used to run the project locally for development and te
 $ npm install
 ```
 2. Provide a `.env` file in the format of `.env.example` and populate relevant details for CDR, email, and accepted client URL.
-3. Start the server
+3. Start the server:
 ```js
 $ npm start
 ```
