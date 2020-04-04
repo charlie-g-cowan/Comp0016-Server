@@ -11,10 +11,12 @@ export default {
         get user() {
             // 改成你自己的QQ号
             return process.env.EMAIL_USER
+            // return 'menghangsh0101@gmail.com'
         },
         get pass() {
             // 改成你自己的QQ邮箱的授权码
             return process.env.EMAIL_PASS
+            // return 'ebtaicmuovmheqkv'
         },
         get code() {
             return () => {
