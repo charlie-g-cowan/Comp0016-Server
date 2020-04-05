@@ -9,11 +9,11 @@ export default {
             return process.env.EMAIL_HOST
         },
         get user() {
-            // Change to your own QQ number
+            // gamil number
             return process.env.EMAIL_USER
         },
         get pass() {
-            // Change to the authorization code of your own QQ mailbox
+            // the authorization code of gmail
             return process.env.EMAIL_PASS
         },
         get code() {
