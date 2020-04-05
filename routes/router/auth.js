@@ -232,9 +232,9 @@ router.post('/reset', async (req, res) => {
     let { code, email, password } = req.body;
     let Code = req.cookies.code || '';
     if (Code === '') {
-        return res.status(200).json({
+        return res.status(401).json({
             data: null,
-            code: 404,
+            code: 401,
             message: 'Verification code expired.'
         });
     }
@@ -243,6 +243,13 @@ router.post('/reset', async (req, res) => {
             email,
             type: req.body.type
         });
+        if (user === null) {
+            return res.status(404).json({
+                data: null,
+                code: 404,
+                message: 'No user of type ' + req.body.type + ' with that email found'
+            });
+        }
         user.password = bcrypt.hashSync(password, 10);
         await user.save();
         return res.status(200).json({
@@ -251,9 +258,9 @@ router.post('/reset', async (req, res) => {
             message: 'Success'
         });
     } else {
-        return res.status(200).json({
+        return res.status(401).json({
             data: null,
-            code: 404,
+            code: 401,
             message: 'Incorrect verification code.'
         });
     }
