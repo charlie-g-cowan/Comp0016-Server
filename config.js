@@ -2,19 +2,19 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 export default {
-    jwtSecret: 'xxx', // 自己定义一下密钥
+    jwtSecret: 'xxx', // Define the key yourself
     db: 'mongodb://localhost:27017/IPROMS',
     smtp: {
         get host() {
             return 'smtp.gmail.com'
         },
         get user() {
-            // 改成你自己的QQ号
+            // Change to your own QQ number
             return process.env.EMAIL_USER
             // return 'menghangsh0101@gmail.com'
         },
         get pass() {
-            // 改成你自己的QQ邮箱的授权码
+            // Change to the authorization code of your own QQ mailbox
             return process.env.EMAIL_PASS
             // return 'ebtaicmuovmheqkv'
         },

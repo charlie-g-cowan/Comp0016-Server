@@ -69,7 +69,7 @@ async function getOrCreateEHRIdFromNHSNumber(nhsNumber) {
 }
 
 
-// 登录
+// Log in
 router.post('/signin', async (req, res) => {
     let user = await User.findOne({
         email: req.body.email,
@@ -106,7 +106,7 @@ router.post('/signin', async (req, res) => {
 });
 
 
-// 注册
+// Register
 router.post('/signup', async (req, res) => {
     let data = req.body;
     let user = await User.findOne({
@@ -122,7 +122,7 @@ router.post('/signup', async (req, res) => {
     }
     let newUser = {
         email: data.email,
-        password: bcrypt.hashSync(data.password, 10), //用bcrypt加密,哈希加密并且长度为10
+        password: bcrypt.hashSync(data.password, 10), // Encrypted with bcrypt, hash encrypted and length 10
         type: data.type, // patient clinicians
         nhsNumber: data.nhsNumber
     };
@@ -134,7 +134,7 @@ router.post('/signup', async (req, res) => {
         status = 500;
     }
     if (status === 200) {
-        await new User(newUser).save(); //存进数据库
+        await new User(newUser).save(); //Save in database
         res.status(200).json({
             data: null,
             message: 'success',

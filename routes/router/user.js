@@ -4,7 +4,7 @@ import User from '../../models/user.js'
 
 const router = express.Router();
 
-// 获取所有用户的信息
+// Get information about all users
 router.get('/', async (req, res) => {
     let user = await User.find().select('-password');
     res.status(200).json({
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     });
 });
 
-// 根据token获取用户信息
+// Obtain user information based on token
 router.get('/token', async (req, res) => {
     let id = req.user.user._id;
     let user = await User.findById(id).populate('friends');
@@ -25,7 +25,7 @@ router.get('/token', async (req, res) => {
     });
 });
 
-// 根据email获取用户信息
+// Obtain user information based on email
 router.get('/:email', async (req, res) => {
     let email = req.params.email;
     if (email) {
@@ -47,7 +47,7 @@ router.get('/:email', async (req, res) => {
     });
 });
 
-// 更新用户详细信息
+// Update user details
 router.put('/userinfo', async (req, res) => {
     let {
         user: {
@@ -71,7 +71,7 @@ router.put('/userinfo', async (req, res) => {
     });
 });
 
-// 删除指定用户
+// Delete the specified user
 router.delete('/:email', async (req, res) => {
     let user = await User.deleteOne({
         email: req.params.email
