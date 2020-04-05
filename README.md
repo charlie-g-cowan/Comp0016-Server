@@ -8,7 +8,7 @@ These instructions can be used to run the project locally for development and te
 ### Prerequisites
 
 - Git
-- Node.js and the npm package manager
+- Node.js (v12n) and the npm package manager (v6)
 - MongoDB - running on the default port (27017)
 
 ### Installation
