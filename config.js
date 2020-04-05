@@ -3,10 +3,10 @@ dotenv.config();
 
 export default {
     jwtSecret: 'xxx', // Define the key yourself
-    db: 'mongodb://localhost:27017/IPROMS',
+    db: process.env.MONGO_URL,
     smtp: {
         get host() {
-            return 'smtp.gmail.com'
+            return process.env.EMAIL_HOST
         },
         get user() {
             // Change to your own QQ number

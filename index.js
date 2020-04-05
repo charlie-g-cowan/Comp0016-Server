@@ -44,4 +44,4 @@ app.use('/api', indexRouter);
 mongoose.connect(`${config.db}`, { useUnifiedTopology: true, useNewUrlParser: true });
 
 
-app.listen(6060, () => console.log('Running on localhost:6060'));
+app.listen(process.env.SERVER_PORT, () => console.log('Running on localhost:6060'));
