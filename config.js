@@ -11,12 +11,10 @@ export default {
         get user() {
             // Change to your own QQ number
             return process.env.EMAIL_USER
-            // return 'menghangsh0101@gmail.com'
         },
         get pass() {
             // Change to the authorization code of your own QQ mailbox
             return process.env.EMAIL_PASS
-            // return 'ebtaicmuovmheqkv'
         },
         get code() {
             return () => {
