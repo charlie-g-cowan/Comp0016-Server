@@ -10,10 +10,11 @@ These instructions can be used to run the project locally for development and te
 - Git
 - Node.js (v12) and the npm package manager (v6)
 - MongoDB - running on the default port (27017), though the port can be different if specified in the MONGO_URL environment variable. Download and installation guide is found here: https://docs.mongodb.com/manual/installation/ . You can check it is running by running (on Linux)
-```shell script
-$ mongo --port 27017
-```
-See the Mongo installation guide linked above for more details (especially regarding Windows/macOS).
+    ```shell script
+    $ mongo --port 27017
+    ```
+    Press Ctrl-C to exit after entering the Mongo shell.
+    See the Mongo installation guide linked above for more details (especially regarding Windows/macOS).
 
 ### Installation
 
